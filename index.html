@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triagem de TDAH — ASRS-18, WURS-25 e DIVA</title>
+<style>
+  :root{
+    --bg:#F5F4F1;
+    --paper:#FFFFFF;
+    --ink:#1E2B2E;
+    --ink-soft:#54636A;
+    --line:#DDD9D0;
+    --primary:#2C5A63;
+    --primary-dark:#1D4249;
+    --accent:#B5652E;
+    --ok:#3E7256;
+    --warn:#B5652E;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Georgia",serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sans{font-family:"Helvetica Neue",Arial,sans-serif;}
+  .shell{
+    max-width:760px;
+    margin:0 auto;
+    padding:32px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:28px;
+  }
+  header.top .mark{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+  }
+  header.top .step{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  h1{
+    font-size:30px;
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:-.01em;
+  }
+  h2{
+    font-size:21px;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  p.lede{
+    color:var(--ink-soft);
+    font-size:16px;
+    max-width:60ch;
+    margin:0 0 24px;
+  }
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px 28px 24px;
+    margin-bottom:20px;
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .field input[type=text], .field input[type=date]{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    background:#FCFBF9;
+    color:var(--ink);
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:520px){.row2{grid-template-columns:1fr;}}
+
+  .instructions{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:14px;
+    background:#EFEEE9;
+    border-left:3px solid var(--primary);
+    padding:12px 16px;
+    margin-bottom:24px;
+    color:var(--ink);
+  }
+  .subhead{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    text-transform:none;
+    color:var(--primary-dark);
+    font-weight:700;
+    margin:28px 0 12px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+  }
+  .subhead:first-of-type{margin-top:0;}
+
+  .question{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .question:last-child{border-bottom:none;}
+  .qtext{
+    font-size:16px;
+    margin-bottom:12px;
+  }
+  .qnum{
+    color:var(--primary);
+    font-weight:600;
+    margin-right:6px;
+  }
+  .scale{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  .scale label{
+    flex:1 1 auto;
+    min-width:78px;
+    text-align:center;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:9px 4px;
+    cursor:pointer;
+    background:#FCFBF9;
+    transition:background .12s, border-color .12s, color .12s;
+    user-select:none;
+  }
+  .scale input{position:absolute;opacity:0;pointer-events:none;}
+  .scale label.checked{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  .scale label:hover{border-color:var(--primary);}
+
+  .dq{
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:1fr 130px 130px;
+    gap:14px;
+    align-items:center;
+  }
+  .dq:last-child{border-bottom:none;}
+  .dq .dqtext{font-size:15.5px;}
+  .dq .dqcol{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    text-align:center;
+  }
+  .dq .dqcol .colhead{font-size:10.5px;color:var(--ink-soft);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;}
+  .yn{display:flex;gap:6px;justify-content:center;}
+  .yn label{
+    font-size:12.5px;
+    padding:6px 10px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    cursor:pointer;
+    background:#FCFBF9;
+    color:var(--ink-soft);
+  }
+  .yn input{position:absolute;opacity:0;pointer-events:none;}
+  .yn label.checked{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .dq-domain{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px;
+    color:var(--primary);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-top:18px;
+    margin-bottom:2px;
+  }
+  .dq-domain:first-child{margin-top:0;}
+  @media (max-width:560px){
+    .dq{grid-template-columns:1fr;gap:8px;}
+    .dq .dqcol{text-align:left;}
+    .yn{justify-content:flex-start;}
+  }
+
+  .chipgrid{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    padding:9px 14px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    cursor:pointer;
+    background:#FCFBF9;
+    color:var(--ink-soft);
+  }
+  .chip input{position:absolute;opacity:0;pointer-events:none;}
+  .chip.checked{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+  .dq-phase{
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.05em;
+    margin-bottom:14px;
+  }
+  .dq-bigtext{
+    font-size:19px;
+    line-height:1.4;
+    margin-bottom:18px;
+  }
+  .dq-textarea{
+    width:100%;
+    min-height:110px;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    background:#FCFBF9;
+    color:var(--ink);
+    resize:vertical;
+  }
+
+  .navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:28px;
+    gap:12px;
+  }
+  button{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:14.5px;
+    font-weight:600;
+    padding:12px 22px;
+    border-radius:var(--radius);
+    border:1px solid var(--primary);
+    background:var(--primary);
+    color:#fff;
+    cursor:pointer;
+  }
+  button.ghost{
+    background:transparent;
+    color:var(--primary-dark);
+    border:1px solid var(--line);
+  }
+  button:disabled{opacity:.45;cursor:not-allowed;}
+  button.small{padding:8px 14px;font-size:13px;}
+
+  .progress{
+    height:3px;
+    background:var(--line);
+    border-radius:2px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .progress > div{
+    height:100%;
+    background:var(--primary);
+    transition:width .25s ease;
+  }
+
+  .incomplete-note{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--accent);
+    margin-top:4px;
+    display:none;
+  }
+
+  /* ---------- report ---------- */
+  #report{display:none;}
+  .report-paper{
+    background:var(--paper);
+    border:1px solid var(--line);
+    padding:40px;
+  }
+  .report-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;
+    margin-bottom:20px;
+  }
+  .report-head h1{font-size:22px;margin-bottom:2px;}
+  .report-head .sub{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);}
+  .report-meta{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    text-align:right;
+    color:var(--ink-soft);
+  }
+  .result-block{margin-bottom:26px;}
+  .result-block h3{
+    font-size:17px;
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .pill{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11.5px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    letter-spacing:.02em;
+  }
+  .pill.pos{background:#F4E3D6;color:var(--accent);}
+  .pill.neg{background:#E1EBE5;color:var(--ok);}
+  .pill.neutral{background:#E7E4DC;color:var(--ink-soft);}
+  .dq-report-item{
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .dq-report-item:last-child{border-bottom:none;}
+  .dq-report-q{font-size:14.5px;font-weight:600;margin-bottom:4px;}
+  .dq-report-a{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-bottom:2px;
+  }
+  .scorebox{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:12px 0 14px;
+  }
+  .scorebox .cell{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px 14px;
+  }
+  .scorebox .cell .num{font-size:22px;font-weight:700;color:var(--primary-dark);font-family:"Iowan Old Style",Georgia,serif;}
+  .scorebox .cell .lab{font-size:11.5px;color:var(--ink-soft);}
+  .report-text{font-size:15px;}
+  .flagged-list{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    margin:10px 0 0;
+    padding-left:18px;
+    color:var(--ink-soft);
+  }
+  .flagged-list li{margin-bottom:3px;}
+  .diva-note{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    background:#EFEEE9;
+    border-left:3px solid var(--accent);
+    padding:12px 16px;
+    margin-top:6px;
+  }
+  .signature{
+    margin-top:36px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .signature .line{
+    border-bottom:1px solid var(--ink-soft);
+    width:280px;
+    margin:26px 0 6px;
+  }
+  .disclaimer{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:20px;
+    border-top:1px dashed var(--line);
+    padding-top:12px;
+  }
+  .report-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+  }
+  .privacy-note{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-top:18px;
+  }
+
+  .pro-access{
+    text-align:center;
+    margin:40px 0;
+    font-size:12.5px;
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0 20px;
+  }
+  .pro-access a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    border-bottom:1px dotted var(--ink-soft);
+  }
+  .pro-access #pinBox{
+    margin-top:14px;
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .pro-access input[type=password]{
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    font-size:14px;
+    width:110px;
+    text-align:center;
+    background:#FCFBF9;
+  }
+  .pro-access input[type=file]{
+    font-size:12px;
+    max-width:220px;
+  }
+  .pro-access #pinError{
+    width:100%;
+    color:var(--accent);
+    font-size:12px;
+    margin-top:8px;
+  }
+
+  @media print{
+    body{background:#fff;}
+    .shell{max-width:100%;padding:0;}
+    #screen-asrs,#screen-wurs,#screen-intro,#screen-diva,#screen-thankyou,.report-actions,.privacy-note,header.top,.progress,.pro-access{display:none !important;}
+    #report{display:block !important;}
+    .report-paper{border:none;padding:0;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="top">
+    <div class="mark sans">Triagem de TDAH · ASRS-18 + WURS-25 + DIVA</div>
+    <div class="step sans" id="stepLabel">Etapa 1 de 3</div>
+  </header>
+
+  <div class="progress"><div id="progressBar" style="width:33%"></div></div>
+
+  <!-- ================= INTRO ================= -->
+  <section id="screen-intro">
+    <h1>Antes de começar</h1>
+    <p class="lede">Este formulário reúne três instrumentos usados para investigar sintomas de TDAH: dois questionários de múltipla escolha e um roteiro final com perguntas abertas, uma de cada vez. No total leva de 20 a 30 minutos. Ao final, um relatório é gerado para você entregar ou mostrar ao seu médico — nada é enviado ou salvo em nenhum servidor, tudo fica apenas neste navegador.</p>
+
+    <div class="card">
+      <div class="field row2">
+        <div>
+          <label for="pname">Nome do paciente</label>
+          <input type="text" id="pname" placeholder="Nome completo">
+        </div>
+        <div>
+          <label for="pdate">Data de hoje</label>
+          <input type="date" id="pdate">
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      Responda com sinceridade, pensando em como você realmente costuma se comportar — não em como gostaria de ser. Não existem respostas certas ou erradas.
+    </div>
+
+    <div class="navbar">
+      <span></span>
+      <button onclick="goTo('asrs')">Começar →</button>
+    </div>
+  </section>
+
+  <!-- ================= ASRS ================= -->
+  <section id="screen-asrs" style="display:none">
+    <h2>Parte 1 — ASRS-18</h2>
+    <p class="lede">Pensando nos últimos 6 meses, marque a frequência que melhor descreve cada situação.</p>
+    <div class="card" id="asrsCard"></div>
+    <div class="incomplete-note sans" id="asrsIncomplete">Responda todas as perguntas para continuar.</div>
+    <div class="navbar">
+      <button class="ghost" onclick="goTo('intro')">← Voltar</button>
+      <button onclick="tryNext('asrs','wurs')">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- ================= WURS ================= -->
+  <section id="screen-wurs" style="display:none">
+    <h2>Parte 2 — Escala de Wender-Utah (WURS-25)</h2>
+    <p class="lede">Agora pense em como você era quando criança, por volta dos 6 aos 10 anos.</p>
+    <div class="card" id="wursCard"></div>
+    <div class="incomplete-note sans" id="wursIncomplete">Responda todas as perguntas para gerar o relatório.</div>
+    <div class="navbar">
+      <button class="ghost" onclick="goTo('asrs')">← Voltar</button>
+      <button onclick="tryNext('wurs','diva')">Continuar →</button>
+    </div>
+  </section>
+
+  <!-- ================= PRE-DIVA ================= -->
+  <section id="screen-diva" style="display:none">
+
+    <!-- one-question-at-a-time flow -->
+    <div id="divaFlow">
+      <h2>Parte 3 — Roteiro DIVA</h2>
+      <p class="lede">Uma pergunta por vez. Descreva com um exemplo real, não apenas sim/não — isso é o que o(a) médico(a) vai ler para julgar clinicamente. Depois de avançar, não é possível voltar e editar a resposta anterior.</p>
+
+      <div class="card">
+        <div class="dq-domain" id="divaDomainLabel">Desatenção</div>
+        <div class="dq-phase sans" id="divaPhaseLabel">INFÂNCIA (até por volta dos 12 anos)</div>
+        <div class="dq-bigtext" id="divaQuestionText"></div>
+        <textarea class="dq-textarea" id="divaAnswerInput" rows="4" placeholder="Descreva com um exemplo concreto, recente ou marcante. Se não se aplica, escreva “não”."></textarea>
+        <div class="incomplete-note sans" id="divaAnswerIncomplete">Escreva alguma resposta (pode ser só “não”) para continuar.</div>
+      </div>
+
+      <div class="navbar">
+        <span class="sans" style="font-size:13px;color:var(--ink-soft)" id="divaQCounter">Pergunta 1 de 36</span>
+        <button onclick="divaNext()">Próxima →</button>
+      </div>
+    </div>
+
+    <!-- final page: impairment + onset -->
+    <div id="divaFinal" style="display:none">
+      <h2>Parte 3 — Últimas duas perguntas</h2>
+      <p class="lede">Sem voltar às anteriores. Estas fecham o roteiro.</p>
+
+      <div class="card">
+        <div class="subhead" style="margin-top:0">Prejuízo funcional</div>
+        <p class="lede" style="margin-bottom:14px">Em quais áreas essas dificuldades causaram problemas reais (na infância e/ou na vida adulta)?</p>
+        <div class="chipgrid" id="impairGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="subhead" style="margin-top:0">Início dos sintomas</div>
+        <div class="field">
+          <label for="onsetSelect">Vários desses sintomas já estavam presentes antes dos 12 anos de idade?</label>
+          <select id="onsetSelect" class="sans" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:15px;background:#FCFBF9;">
+            <option value="">Selecione…</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+            <option value="indeterminado">Não tenho certeza</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <span></span>
+        <button onclick="generateReport()">Gerar relatório →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THANK YOU (paciente) ================= -->
+  <section id="screen-thankyou" style="display:none">
+    <div class="card" style="text-align:center;padding:48px 28px;">
+      <h2 style="margin-bottom:10px;">Obrigado(a).</h2>
+      <p class="lede" style="margin:0 auto 6px;">Suas respostas foram registradas e enviadas com segurança para o consultório. Pode devolver o dispositivo para a equipe, se for o caso.</p>
+      <p class="lede sans" id="downloadNote" style="display:none;font-size:13.5px;margin-top:14px;">
+        Não foi possível confirmar o envio agora (sem conexão?). Por garantia, um arquivo protegido com suas respostas foi salvo neste dispositivo — normalmente na pasta <strong>Downloads</strong> ou <strong>Transferências</strong>. Se possível, envie esse arquivo para o consultório por WhatsApp ou e-mail.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= ACESSO DO PROFISSIONAL (backup — uso normal é por e-mail) ================= -->
+  <div class="pro-access sans">
+    <a href="#" id="proAccessLink" onclick="togglePinBox(event)">Acesso do profissional (backup)</a>
+    <div id="pinBox" style="display:none">
+      <div style="width:100%;text-align:center;font-size:12px;color:var(--ink-soft);margin-bottom:2px;">Uso normal: o resultado chega por e-mail. Isto aqui é só backup — mesma sessão libera com o PIN; arquivo baixado (.tdah) precisa do PIN também.</div>
+      <input type="file" id="fileInput" accept=".tdah,.json,.txt" class="sans">
+      <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter')unlockReport()">
+      <button class="small" onclick="unlockReport()">Entrar</button>
+      <div id="pinError" style="display:none">PIN incorreto.</div>
+    </div>
+  </div>
+
+  <!-- ================= REPORT ================= -->
+  <section id="report">
+    <div class="report-paper">
+      <div class="report-head">
+        <div>
+          <h1>Relatório de Triagem — TDAH</h1>
+          <div class="sub">ASRS-18 (sintomas atuais) + WURS-25 (sintomas na infância)</div>
+        </div>
+        <div class="report-meta">
+          <div id="repName">—</div>
+          <div id="repDate">—</div>
+        </div>
+      </div>
+
+      <div class="result-block">
+        <h3>ASRS-18 <span class="pill" id="asrsPill">—</span></h3>
+        <div class="scorebox">
+          <div class="cell"><div class="num" id="asrsAscore">0/9</div><div class="lab">Parte A — desatenção (freq./muito freq.)</div></div>
+          <div class="cell"><div class="num" id="asrsBscore">0/9</div><div class="lab">Parte B — hiperatividade/impulsividade (freq./muito freq.)</div></div>
+          <div class="cell"><div class="num" id="asrsTotalScore">0/72</div><div class="lab">Pontuação bruta total (0–4 por item)</div></div>
+        </div>
+        <p class="report-text" id="asrsInterp"></p>
+      </div>
+
+      <div class="result-block">
+        <h3>WURS-25 <span class="pill" id="wursPill">—</span></h3>
+        <div class="scorebox">
+          <div class="cell"><div class="num" id="wursScore">0/100</div><div class="lab">Pontuação total</div></div>
+          <div class="cell"><div class="num" id="wursCutHigh">≥46</div><div class="lab">Corte clássico</div></div>
+          <div class="cell"><div class="num" id="wursCutLow">≥30</div><div class="lab">Corte de maior sensibilidade</div></div>
+        </div>
+        <p class="report-text" id="wursInterp"></p>
+      </div>
+
+      <div class="result-block">
+        <h3>Roteiro DIVA — respostas do paciente <span class="pill neutral">Para leitura clínica</span></h3>
+        <p class="report-text" style="margin-bottom:14px">Respostas em texto livre, coletadas uma pergunta por vez, sem possibilidade de o paciente voltar e ajustar respostas anteriores. O julgamento sobre o que configura sintoma (e não traço de personalidade) é feito na leitura abaixo.</p>
+
+        <div class="subhead" style="margin-top:0">Desatenção</div>
+        <div id="divaInattentionBlock"></div>
+
+        <div class="subhead">Hiperatividade / impulsividade</div>
+        <div id="divaHyperBlock"></div>
+
+        <p class="report-text" id="divaMeta" style="margin-top:14px"></p>
+        <div class="diva-note">
+          Este levantamento coleta relatos para leitura clínica — não substitui a DIVA-5 aplicada em consulta, que também observa a forma como o paciente responde, corrige inconsistências em tempo real e cruza informação de outros critérios.
+        </div>
+      </div>
+
+      <div class="signature">
+        <div>Avaliação clínica complementar realizada por:</div>
+        <div class="line"></div>
+        <div>Alysson — CRM-PR 49.769</div>
+      </div>
+
+      <div class="disclaimer">
+        Este relatório é gerado a partir de escalas de autorrelato (ASRS-18 — versão validada no Brasil, Mattos et al.; WURS-25 — tradução de trabalho a partir de Ward, Wender &amp; Reimherr, 1993) e serve apenas como apoio à triagem. Não constitui, isoladamente, diagnóstico de TDAH. O diagnóstico requer avaliação clínica presencial por profissional habilitado.
+      </div>
+    </div>
+
+    <div class="report-actions">
+      <button onclick="window.print()">Imprimir / salvar em PDF</button>
+      <button class="ghost small" onclick="copyReportText()" id="copyBtn">Copiar texto do relatório</button>
+      <button class="ghost small" onclick="location.reload()">Recomeçar</button>
+    </div>
+    <div class="privacy-note">Nada neste formulário é enviado a servidores — todos os dados existem apenas no seu navegador e somem ao fechar a página.</div>
+  </section>
+
+</div>
+
+<script>
+const SCALE_LABELS = ["Nunca","Raramente","Às vezes","Frequentemente","Muito frequentemente"];
+const WURS_LABELS = ["Nada / muito leve","Leve","Moderado","Bastante","Muito"];
+
+const asrsPartA = [
+  "Com que frequência você comete erros por falta de atenção quando tem de trabalhar num projeto chato ou difícil?",
+  "Com que frequência você tem dificuldade para manter a atenção quando está fazendo um trabalho chato ou repetitivo?",
+  "Com que frequência você tem dificuldade para se concentrar no que as pessoas dizem, mesmo quando elas estão falando diretamente com você?",
+  "Com que frequência você deixa um projeto pela metade depois de já ter feito as partes mais difíceis?",
+  "Com que frequência você tem dificuldade para fazer um trabalho que exige organização?",
+  "Quando você precisa fazer algo que exige muita concentração, com que frequência você evita ou adia o início?",
+  "Com que frequência você coloca as coisas fora do lugar ou tem dificuldade de encontrar as coisas em casa ou no trabalho?",
+  "Com que frequência você se distrai com atividades ou barulho a sua volta?",
+  "Com que frequência você tem dificuldade para lembrar de compromissos ou obrigações?"
+];
+const asrsPartB = [
+  "Com que frequência você fica se mexendo na cadeira ou balançando as mãos ou os pés quando precisa ficar sentado(a) por muito tempo?",
+  "Com que frequência você se levanta da cadeira em reuniões ou em outras situações onde deveria ficar sentado(a)?",
+  "Com que frequência você se sente inquieto(a) ou agitado(a)?",
+  "Com que frequência você tem dificuldade para sossegar e relaxar quando tem tempo livre para você?",
+  "Com que frequência você se sente ativo(a) demais e necessitando fazer coisas, como se estivesse “com um motor ligado”?",
+  "Com que frequência você se pega falando demais em situações sociais?",
+  "Quando você está conversando, com que frequência você se pega terminando as frases das pessoas antes delas?",
+  "Com que frequência você tem dificuldade para esperar nas situações onde cada um tem a sua vez?",
+  "Com que frequência você interrompe os outros quando eles estão ocupados?"
+];
+
+const wursItems = [
+  "Problemas de concentração, distraía-me com facilidade",
+  "Ansioso(a), preocupado(a)",
+  "Nervoso(a), inquieto(a)",
+  "Desatento(a), “viajando”/devaneando",
+  "Explosivo(a) ou de temperamento curto, “pavio curto”",
+  "Ataques de raiva, birras",
+  "Dificuldade em terminar o que começava, não concluía as tarefas",
+  "Teimoso(a), obstinado(a)",
+  "Triste ou para baixo, deprimido(a), infeliz",
+  "Desobediente com os pais, rebelde, respondão(a)",
+  "Baixa opinião sobre mim mesmo(a)",
+  "Irritável",
+  "Instável no humor, com altos e baixos",
+  "Com raiva, zangado(a)",
+  "Agia sem pensar, impulsivo(a)",
+  "Tendência a ser imaturo(a)",
+  "Sentimentos de culpa, arrependido(a)",
+  "Perdia o controle de mim mesmo(a)",
+  "Tendência a ser ou agir de forma irracional",
+  "Impopular com outras crianças, não mantinha amizades, não me dava bem com outras crianças",
+  "Dificuldade em ver as coisas do ponto de vista de outra pessoa",
+  "Problemas com autoridades, problemas na escola, idas à diretoria",
+  "No geral, um(a) aluno(a) fraco(a), aprendia devagar",
+  "Dificuldade com matemática ou números",
+  "Não rendia de acordo com meu potencial"
+];
+
+function buildScale(name, index, labels){
+  let html = '<div class="scale">';
+  labels.forEach((lab, val)=>{
+    html += `<label data-name="${name}${index}" data-val="${val}">
+      <input type="radio" name="${name}${index}" value="${val}" onchange="onSelect(this)">
+      ${lab}
+    </label>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderASRS(){
+  let html = '<div class="subhead">Parte A — desatenção</div>';
+  asrsPartA.forEach((q,i)=>{
+    html += `<div class="question"><div class="qtext"><span class="qnum">${i+1}.</span>${q}</div>${buildScale('a',i,SCALE_LABELS)}</div>`;
+  });
+  html += '<div class="subhead">Parte B — hiperatividade / impulsividade</div>';
+  asrsPartB.forEach((q,i)=>{
+    html += `<div class="question"><div class="qtext"><span class="qnum">${i+1}.</span>${q}</div>${buildScale('b',i,SCALE_LABELS)}</div>`;
+  });
+  document.getElementById('asrsCard').innerHTML = html;
+}
+
+const divaInattention = [
+  "Falhar em prestar atenção a detalhes ou cometer erros por descuido em tarefas",
+  "Ter dificuldade para manter a atenção em tarefas ou atividades",
+  "Parecer não escutar quando alguém fala diretamente com você",
+  "Não seguir instruções até o fim e não terminar tarefas, trabalhos ou obrigações",
+  "Ter dificuldade para organizar tarefas e atividades",
+  "Evitar ou relutar em se envolver em tarefas que exigem esforço mental prolongado",
+  "Perder objetos necessários para tarefas ou atividades",
+  "Distrair-se com facilidade por estímulos externos ou pensamentos",
+  "Esquecer-se de compromissos, obrigações ou atividades do dia a dia"
+];
+const divaHyperactivity = [
+  "Remexer as mãos ou os pés, ou se contorcer na cadeira",
+  "Levantar-se em situações em que se espera que fique sentado(a)",
+  "Sentir-se inquieto(a) por dentro, com necessidade de se mexer",
+  "Ter dificuldade para fazer atividades de lazer com calma",
+  "Estar sempre \u201ca todo vapor\u201d, como se estivesse \u201ccom o motor ligado\u201d",
+  "Falar em excesso",
+  "Responder antes de a pergunta ser concluída, terminar frases dos outros",
+  "Ter dificuldade para esperar a sua vez",
+  "Interromper ou se intrometer em conversas, jogos ou atividades alheias"
+];
+const impairAreas = ["Trabalho / estudo","Vida familiar e relacionamentos","Contatos sociais","Lazer / hobbies","Autoconfiança / autoimagem"];
+
+// flatten into a sequential 36-question flow: for each of the 18 criteria, infância then atual
+const divaFlat = [];
+divaInattention.forEach(q=>{
+  divaFlat.push({domain:'Desatenção', text:q, phase:'INFÂNCIA (até por volta dos 12 anos)'});
+  divaFlat.push({domain:'Desatenção', text:q, phase:'ATUALMENTE'});
+});
+divaHyperactivity.forEach(q=>{
+  divaFlat.push({domain:'Hiperatividade / impulsividade', text:q, phase:'INFÂNCIA (até por volta dos 12 anos)'});
+  divaFlat.push({domain:'Hiperatividade / impulsividade', text:q, phase:'ATUALMENTE'});
+});
+const divaAnswers = new Array(divaFlat.length).fill(null);
+let divaIndex = 0;
+
+function renderDivaQuestion(){
+  const q = divaFlat[divaIndex];
+  document.getElementById('divaDomainLabel').textContent = q.domain;
+  document.getElementById('divaPhaseLabel').textContent = q.phase;
+  document.getElementById('divaQuestionText').textContent = q.text;
+  document.getElementById('divaAnswerInput').value = '';
+  document.getElementById('divaAnswerIncomplete').style.display = 'none';
+  document.getElementById('divaQCounter').textContent = `Pergunta ${divaIndex+1} de ${divaFlat.length}`;
+  document.getElementById('divaAnswerInput').focus();
+  const frac = divaIndex/divaFlat.length;
+  document.getElementById('progressBar').style.width = (75 + frac*25)+'%';
+}
+
+function divaNext(){
+  const val = document.getElementById('divaAnswerInput').value.trim();
+  if(!val){
+    document.getElementById('divaAnswerIncomplete').style.display='block';
+    return;
+  }
+  divaAnswers[divaIndex] = val;
+  divaIndex++;
+  if(divaIndex < divaFlat.length){
+    renderDivaQuestion();
+  } else {
+    document.getElementById('divaFlow').style.display = 'none';
+    document.getElementById('divaFinal').style.display = 'block';
+    document.getElementById('progressBar').style.width = '97%';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function renderDivaFinalChips(){
+  let chips = '';
+  impairAreas.forEach((a,i)=>{
+    chips += `<label class="chip" data-name="imp${i}"><input type="checkbox" id="imp${i}" onchange="onSelectChip(this)">${a}</label>`;
+  });
+  document.getElementById('impairGrid').innerHTML = chips;
+}
+
+function onSelectChip(input){
+  input.closest('label').classList.toggle('checked', input.checked);
+}
+
+function renderWURS(){
+  let html = '<div class="subhead">Quando eu era criança, eu era (ou tinha):</div>';
+  wursItems.forEach((q,i)=>{
+    html += `<div class="question"><div class="qtext"><span class="qnum">${i+1}.</span>${q}</div>${buildScale('w',i,WURS_LABELS)}</div>`;
+  });
+  document.getElementById('wursCard').innerHTML = html;
+}
+
+function onSelect(input){
+  const name = input.name;
+  document.querySelectorAll(`label[data-name="${name}"]`).forEach(l=>l.classList.remove('checked'));
+  input.closest('label').classList.add('checked');
+}
+
+renderASRS();
+renderWURS();
+renderDivaFinalChips();
+
+const screens = {intro:'screen-intro', asrs:'screen-asrs', wurs:'screen-wurs', diva:'screen-diva', thankyou:'screen-thankyou'};
+const progressMap = {intro:25, asrs:50, wurs:75, diva:100};
+const stepMap = {intro:'Etapa 1 de 4', asrs:'Etapa 2 de 4', wurs:'Etapa 3 de 4', diva:'Etapa 4 de 4'};
+
+function goTo(key){
+  Object.values(screens).forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById(screens[key]).style.display='block';
+  document.getElementById('progressBar').style.width = progressMap[key]+'%';
+  document.getElementById('stepLabel').textContent = stepMap[key];
+  document.querySelector('.pro-access').style.display = (key==='asrs'||key==='wurs'||key==='diva') ? 'none' : 'block';
+  if(key==='diva'){
+    divaIndex = 0;
+    divaAnswers.fill(null);
+    document.getElementById('divaFlow').style.display='block';
+    document.getElementById('divaFinal').style.display='none';
+    renderDivaQuestion();
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function allAnswered(prefix,count){
+  for(let i=0;i<count;i++){
+    if(!document.querySelector(`input[name="${prefix}${i}"]:checked`)) return false;
+  }
+  return true;
+}
+
+function tryNext(fromKey,toKey){
+  if(fromKey==='asrs'){
+    const okA = allAnswered('a',9);
+    const okB = allAnswered('b',9);
+    if(!okA || !okB){
+      document.getElementById('asrsIncomplete').style.display='block';
+      return;
+    }
+    document.getElementById('asrsIncomplete').style.display='none';
+  }
+  if(fromKey==='wurs'){
+    if(!allAnswered('w',25)){
+      document.getElementById('wursIncomplete').style.display='block';
+      return;
+    }
+    document.getElementById('wursIncomplete').style.display='none';
+  }
+  goTo(toKey);
+}
+
+function getVal(prefix,i){
+  const el = document.querySelector(`input[name="${prefix}${i}"]:checked`);
+  return el ? parseInt(el.value) : null;
+}
+
+// ---- collect raw answers from the DOM into a plain data object ----
+function collectAnswers(){
+  let aVals = [], bVals = [], wVals = [];
+  for(let i=0;i<9;i++) aVals.push(getVal('a',i));
+  for(let i=0;i<9;i++) bVals.push(getVal('b',i));
+  for(let i=0;i<25;i++) wVals.push(getVal('w',i));
+  const impairAreasChecked = impairAreas.filter((a,i)=>document.getElementById('imp'+i).checked);
+  return {
+    name: document.getElementById('pname').value.trim(),
+    date: document.getElementById('pdate').value,
+    asrsA: aVals,
+    asrsB: bVals,
+    wurs: wVals,
+    diva: divaAnswers.slice(),
+    impair: impairAreasChecked,
+    onset: document.getElementById('onsetSelect').value
+  };
+}
+
+// ---- render the report screen from a plain data object (live or decrypted) ----
+function buildReportFromData(data){
+  const aVals = data.asrsA, bVals = data.asrsB;
+  const aPositive = aVals.filter(v=>v>=3).length;
+  const bPositive = bVals.filter(v=>v>=3).length;
+  const asrsTotal = [...aVals,...bVals].reduce((s,v)=>s+v,0);
+  const asrsFlag = aPositive>=4 || bPositive>=4;
+
+  document.getElementById('asrsAscore').textContent = aPositive+'/9';
+  document.getElementById('asrsBscore').textContent = bPositive+'/9';
+  document.getElementById('asrsTotalScore').textContent = asrsTotal+'/72';
+  const asrsPill = document.getElementById('asrsPill');
+  asrsPill.textContent = asrsFlag ? 'Rastreio positivo' : 'Rastreio negativo';
+  asrsPill.className = 'pill ' + (asrsFlag ? 'pos':'neg');
+  document.getElementById('asrsInterp').textContent = asrsFlag
+    ? `Rastreio sugestivo: ${aPositive} de 9 itens de desatenção e ${bPositive} de 9 itens de hiperatividade/impulsividade marcados como frequentes ou muito frequentes (corte de referência: ≥4 em qualquer uma das partes). Avalia apenas o critério A (sintomas) do DSM-5-TR — os demais critérios precisam ser investigados na entrevista clínica.`
+    : `Rastreio não sugestivo por este corte: ${aPositive} de 9 itens de desatenção e ${bPositive} de 9 itens de hiperatividade/impulsividade marcados como frequentes ou muito frequentes (corte de referência: ≥4). Isoladamente não exclui TDAH — considerar o contexto clínico.`;
+
+  const wursTotal = data.wurs.reduce((s,v)=>s+v,0);
+  document.getElementById('wursScore').textContent = wursTotal+'/100';
+  const wursPill = document.getElementById('wursPill');
+  const wursFlag = wursTotal>=46;
+  const wursBorderline = wursTotal>=30 && wursTotal<46;
+  wursPill.textContent = wursFlag ? 'Acima do corte clássico' : (wursBorderline ? 'Corte intermediário' : 'Abaixo dos cortes');
+  wursPill.className = 'pill ' + (wursFlag || wursBorderline ? 'pos':'neg');
+  document.getElementById('wursInterp').textContent = wursFlag
+    ? `Pontuação de ${wursTotal}/100, acima do corte clássico de 46, compatível com sintomas significativos de TDAH na infância relatados retrospectivamente.`
+    : wursBorderline
+      ? `Pontuação de ${wursTotal}/100, entre os cortes de 30 e 46 — resultado limítrofe, que reforça a necessidade de investigar a história escolar e o relato de terceiros sobre a infância.`
+      : `Pontuação de ${wursTotal}/100, abaixo dos cortes de referência (30 e 46). Isoladamente não exclui TDAH, sobretudo em relatos retrospectivos com viés de memória.`;
+
+  const onsetLabel = data.onset==='sim' ? 'antes dos 12 anos' : data.onset==='nao' ? 'não confirmado antes dos 12 anos' : 'idade de início incerta';
+
+  function buildDivaDomainHTML(domainName){
+    let rows = '';
+    for(let i=0;i<divaFlat.length;i+=2){
+      if(divaFlat[i].domain !== domainName) continue;
+      const childAns = data.diva[i] || '—';
+      const adultAns = data.diva[i+1] || '—';
+      rows += `<div class="dq-report-item">
+        <div class="dq-report-q">${divaFlat[i].text}</div>
+        <div class="dq-report-a"><strong>Infância:</strong> ${childAns}</div>
+        <div class="dq-report-a"><strong>Atual:</strong> ${adultAns}</div>
+      </div>`;
+    }
+    return rows;
+  }
+  document.getElementById('divaInattentionBlock').innerHTML = buildDivaDomainHTML('Desatenção');
+  document.getElementById('divaHyperBlock').innerHTML = buildDivaDomainHTML('Hiperatividade / impulsividade');
+  document.getElementById('divaMeta').innerHTML =
+    `<strong>Início dos sintomas:</strong> ${onsetLabel} &nbsp;·&nbsp; <strong>Áreas com prejuízo relatado:</strong> ${data.impair.length ? data.impair.join(', ') : 'nenhuma marcada'}`;
+
+  document.getElementById('repName').textContent = data.name ? data.name : 'Paciente não identificado';
+  document.getElementById('repDate').textContent = data.date ? formatDate(data.date) : formatDate(new Date().toISOString().slice(0,10));
+
+  window.__lastReportData = data;
+}
+
+// ---- lightweight AES-GCM encryption, key derived from the PIN via PBKDF2 ----
+async function deriveKey(pin, saltBytes){
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(pin), {name:'PBKDF2'}, false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt: saltBytes, iterations: 100000, hash:'SHA-256'},
+    keyMaterial,
+    {name:'AES-GCM', length:256},
+    false,
+    ['encrypt','decrypt']
+  );
+}
+function bufToB64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+function b64ToBuf(str){ return Uint8Array.from(atob(str), c=>c.charCodeAt(0)); }
+
+async function encryptData(obj, pin){
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(pin, salt);
+  const plaintext = new TextEncoder().encode(JSON.stringify(obj));
+  const ciphertext = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, plaintext);
+  return { salt: bufToB64(salt), iv: bufToB64(iv), data: bufToB64(ciphertext), v: 1 };
+}
+async function decryptData(payload, pin){
+  const salt = b64ToBuf(payload.salt);
+  const iv = b64ToBuf(payload.iv);
+  const data = b64ToBuf(payload.data);
+  const key = await deriveKey(pin, salt);
+  const plaintext = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, data); // throws on wrong PIN
+  return JSON.parse(new TextDecoder().decode(plaintext));
+}
+
+function slugify(str){
+  return (str||'paciente').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'') || 'paciente';
+}
+
+function triggerDownload(text, filename){
+  const blob = new Blob([text], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ---- build a plain-text summary straight from the answers, no DOM needed ----
+function buildPlainTextReport(data){
+  const aVals = data.asrsA, bVals = data.asrsB;
+  const aPositive = aVals.filter(v=>v>=3).length;
+  const bPositive = bVals.filter(v=>v>=3).length;
+  const asrsTotal = [...aVals,...bVals].reduce((s,v)=>s+v,0);
+  const asrsFlag = aPositive>=4 || bPositive>=4;
+  const asrsLine = asrsFlag
+    ? `Rastreio positivo — Parte A: ${aPositive}/9, Parte B: ${bPositive}/9, total bruto: ${asrsTotal}/72.`
+    : `Rastreio negativo — Parte A: ${aPositive}/9, Parte B: ${bPositive}/9, total bruto: ${asrsTotal}/72.`;
+
+  const wursTotal = data.wurs.reduce((s,v)=>s+v,0);
+  const wursFlag = wursTotal>=46;
+  const wursBorderline = wursTotal>=30 && wursTotal<46;
+  const wursLine = `Pontuação ${wursTotal}/100 — ${wursFlag ? 'acima do corte clássico (46)' : wursBorderline ? 'corte intermediário (30–46)' : 'abaixo dos cortes de referência'}.`;
+
+  const onsetLabel = data.onset==='sim' ? 'antes dos 12 anos' : data.onset==='nao' ? 'não confirmado antes dos 12 anos' : 'idade de início incerta';
+
+  function plainDomain(domainName){
+    let out = '';
+    for(let i=0;i<divaFlat.length;i+=2){
+      if(divaFlat[i].domain !== domainName) continue;
+      out += `- ${divaFlat[i].text}\n  Infância: ${data.diva[i] || '—'}\n  Atual: ${data.diva[i+1] || '—'}\n`;
+    }
+    return out;
+  }
+
+  return `RELATÓRIO DE TRIAGEM — TDAH
+Paciente: ${data.name || 'não identificado'}
+Data: ${data.date ? formatDate(data.date) : formatDate(new Date().toISOString().slice(0,10))}
+
+ASRS-18
+${asrsLine}
+
+WURS-25
+${wursLine}
+
+ROTEIRO DIVA — respostas do paciente (leitura clínica, sem pontuação automática)
+
+Desatenção
+${plainDomain('Desatenção')}
+Hiperatividade / impulsividade
+${plainDomain('Hiperatividade / impulsividade')}
+
+Início dos sintomas: ${onsetLabel}
+Áreas com prejuízo relatado: ${data.impair.length ? data.impair.join(', ') : 'nenhuma marcada'}
+
+Avaliação: Alysson — CRM-PR 49.769
+Apoio de triagem — não constitui diagnóstico isolado.`;
+}
+
+// ---- e-mail automático via Formspree (só você recebe, sem tela de resultado no navegador) ----
+// 1. Crie uma conta grátis em formspree.io
+// 2. Crie um formulário novo, associe ao seu e-mail
+// 3. Cole o endpoint dele aqui embaixo (formato: https://formspree.io/f/xxxxxxxx)
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mnpqvzgq";
+
+async function sendReportByEmail(data){
+  if(!FORMSPREE_ENDPOINT || FORMSPREE_ENDPOINT.startsWith('COLE_AQUI')) return false;
+  const body = buildPlainTextReport(data);
+  try{
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify({
+        subject: `Triagem TDAH — ${data.name || 'paciente não identificado'}`,
+        message: body
+      })
+    });
+    return res.ok;
+  }catch(err){
+    return false;
+  }
+}
+
+async function generateReport(){
+  if(!allAnswered('w',25)){
+    goTo('wurs');
+    document.getElementById('wursIncomplete').style.display='block';
+    return;
+  }
+  document.getElementById('wursIncomplete').style.display='none';
+
+  const data = collectAnswers();
+  window.__reportDataLive = data; // mantido em memória — permite destravar por PIN nesta mesma aba, se precisar
+
+  const emailed = await sendReportByEmail(data);
+
+  // guarda uma cópia local criptografada como rede de segurança, mesmo quando o e-mail funciona
+  try{
+    const payload = await encryptData(data, PROFESSIONAL_PIN);
+    const filename = `triagem_${slugify(data.name)}_${(data.date||'').replace(/-/g,'')||'semdata'}.tdah`;
+    if(!emailed){
+      triggerDownload(JSON.stringify(payload), filename);
+      document.getElementById('downloadNote').style.display = 'block';
+    }
+  }catch(err){
+    // silencioso — se o e-mail já foi enviado, a falta de backup local não é crítica
+  }
+
+  document.getElementById('screen-intro').style.display='none';
+  document.getElementById('screen-asrs').style.display='none';
+  document.getElementById('screen-wurs').style.display='none';
+  document.getElementById('screen-diva').style.display='none';
+  document.getElementById('report').style.display='none';
+  document.getElementById('screen-thankyou').style.display='block';
+  document.querySelector('.pro-access').style.display = 'block';
+  document.getElementById('progressBar').style.width='100%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---- PIN gate: only the professional sees the report ----
+// Altere o PIN abaixo para o que preferir (é também a senha que criptografa o arquivo baixado).
+const PROFESSIONAL_PIN = "4976";
+
+function togglePinBox(e){
+  e.preventDefault();
+  const box = document.getElementById('pinBox');
+  box.style.display = box.style.display==='none' ? 'flex' : 'none';
+  if(box.style.display==='flex') document.getElementById('pinInput').focus();
+}
+
+async function unlockReport(){
+  const val = document.getElementById('pinInput').value.trim();
+  const fileInput = document.getElementById('fileInput');
+  document.getElementById('pinError').style.display='none';
+
+  // Path 1: file uploaded — decrypt it (works across devices/sessions)
+  if(fileInput.files && fileInput.files[0]){
+    try{
+      const text = await fileInput.files[0].text();
+      const payload = JSON.parse(text);
+      const data = await decryptData(payload, val);
+      buildReportFromData(data);
+      document.getElementById('screen-intro').style.display='none';
+      document.getElementById('screen-thankyou').style.display='none';
+      document.getElementById('report').style.display='block';
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }catch(err){
+      document.getElementById('pinError').textContent = 'PIN incorreto ou arquivo inválido.';
+      document.getElementById('pinError').style.display='block';
+      return;
+    }
+  }
+
+  // Path 2: same session — data already in memory, just check the PIN
+  if(window.__reportDataLive){
+    if(val === PROFESSIONAL_PIN){
+      buildReportFromData(window.__reportDataLive);
+      document.getElementById('screen-thankyou').style.display='none';
+      document.getElementById('report').style.display='block';
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      document.getElementById('pinError').textContent = 'PIN incorreto.';
+      document.getElementById('pinError').style.display='block';
+      document.getElementById('pinInput').value='';
+      document.getElementById('pinInput').focus();
+    }
+    return;
+  }
+
+  document.getElementById('pinError').textContent = 'Nenhuma resposta nesta sessão — carregue o arquivo enviado pelo paciente.';
+  document.getElementById('pinError').style.display='block';
+}
+
+function formatDate(iso){
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function copyReportText(){
+  const data = window.__lastReportData;
+  const name = document.getElementById('repName').textContent;
+  const date = document.getElementById('repDate').textContent;
+
+  function plainDomain(domainName){
+    let out = '';
+    const src = data ? data.diva : divaAnswers;
+    for(let i=0;i<divaFlat.length;i+=2){
+      if(divaFlat[i].domain !== domainName) continue;
+      out += `- ${divaFlat[i].text}\n  Infância: ${src[i] || '—'}\n  Atual: ${src[i+1] || '—'}\n`;
+    }
+    return out;
+  }
+
+  const txt = `RELATÓRIO DE TRIAGEM — TDAH
+Paciente: ${name}
+Data: ${date}
+
+ASRS-18
+${document.getElementById('asrsPill').textContent} — Parte A: ${document.getElementById('asrsAscore').textContent} | Parte B: ${document.getElementById('asrsBscore').textContent} | Total bruto: ${document.getElementById('asrsTotalScore').textContent}
+${document.getElementById('asrsInterp').textContent}
+
+WURS-25
+${document.getElementById('wursPill').textContent} — Pontuação: ${document.getElementById('wursScore').textContent}
+${document.getElementById('wursInterp').textContent}
+
+ROTEIRO DIVA — respostas do paciente (leitura clínica, sem pontuação automática)
+
+Desatenção
+${plainDomain('Desatenção')}
+Hiperatividade / impulsividade
+${plainDomain('Hiperatividade / impulsividade')}
+${document.getElementById('divaMeta').textContent}
+
+Próximo passo: entrevista estruturada DIVA-5 completa em consulta para fechamento diagnóstico.
+
+Avaliação: Alysson — CRM-PR 49.769
+Este relatório é apoio de triagem e não constitui diagnóstico isolado.`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn = document.getElementById('copyBtn');
+    const old = btn.textContent;
+    btn.textContent = 'Copiado ✓';
+    setTimeout(()=>btn.textContent=old,1800);
+  });
+}
+</script>
+</body>
+</html>
