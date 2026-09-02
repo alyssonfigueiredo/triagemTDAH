@@ -4,30 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Triagem de TDAH — ASRS-18, WURS-25 e DIVA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F5F4F1;
+    --bg:#F3F1EC;
     --paper:#FFFFFF;
     --ink:#1E2B2E;
-    --ink-soft:#54636A;
-    --line:#DDD9D0;
+    --ink-soft:#5B6A70;
+    --line:#E3DFD4;
     --primary:#2C5A63;
     --primary-dark:#1D4249;
     --accent:#B5652E;
     --ok:#3E7256;
     --warn:#B5652E;
-    --radius:3px;
+    --radius:12px;
+    --radius-sm:9px;
+    --shadow-card:0 1px 2px rgba(30,43,46,.04), 0 10px 28px -14px rgba(30,43,46,.14);
+    --shadow-btn:0 6px 18px -6px rgba(44,90,99,.42);
+    --ring:0 0 0 3px rgba(44,90,99,.14);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--bg);
     color:var(--ink);
-    font-family:"Iowan Old Style","Georgia",serif;
-    line-height:1.5;
+    font-family:"Lora","Iowan Old Style","Georgia",serif;
+    line-height:1.55;
     -webkit-font-smoothing:antialiased;
   }
-  .sans{font-family:"Helvetica Neue",Arial,sans-serif;}
+  .sans{font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;}
   .shell{
     max-width:760px;
     margin:0 auto;
@@ -37,19 +44,21 @@
     display:flex;
     justify-content:space-between;
     align-items:baseline;
-    border-bottom:2px solid var(--ink);
-    padding-bottom:14px;
-    margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:16px;
+    margin-bottom:32px;
   }
   header.top .mark{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
-    letter-spacing:.04em;
-    color:var(--ink-soft);
+    font-weight:600;
+    letter-spacing:.02em;
+    color:var(--primary-dark);
   }
   header.top .step{
-    font-family:"Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:12.5px;
+    font-weight:500;
     color:var(--ink-soft);
   }
   h1{
@@ -73,41 +82,50 @@
     background:var(--paper);
     border:1px solid var(--line);
     border-radius:var(--radius);
+    box-shadow:var(--shadow-card);
     padding:28px 28px 24px;
     margin-bottom:20px;
   }
   .field{margin-bottom:16px;}
   .field label{
     display:block;
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
+    font-weight:500;
     color:var(--ink-soft);
     margin-bottom:6px;
   }
   .field input[type=text], .field input[type=date]{
     width:100%;
-    padding:10px 12px;
+    padding:11px 13px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    border-radius:var(--radius-sm);
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:15px;
-    background:#FCFBF9;
+    background:#FBFAF7;
     color:var(--ink);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .field input[type=text]:focus, .field input[type=date]:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:var(--ring);
   }
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:520px){.row2{grid-template-columns:1fr;}}
 
   .instructions{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:14px;
-    background:#EFEEE9;
+    background:#EEF1EA;
+    border-radius:var(--radius-sm);
     border-left:3px solid var(--primary);
     padding:12px 16px;
     margin-bottom:24px;
     color:var(--ink);
   }
   .subhead{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
     text-transform:none;
     color:var(--primary-dark);
@@ -141,15 +159,16 @@
     flex:1 1 auto;
     min-width:78px;
     text-align:center;
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-weight:500;
     font-size:12.5px;
     color:var(--ink-soft);
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:var(--radius-sm);
     padding:9px 4px;
     cursor:pointer;
-    background:#FCFBF9;
-    transition:background .12s, border-color .12s, color .12s;
+    background:#FBFAF7;
+    transition:background .12s, border-color .12s, color .12s, box-shadow .12s;
     user-select:none;
   }
   .scale input{position:absolute;opacity:0;pointer-events:none;}
@@ -157,6 +176,7 @@
     background:var(--primary);
     border-color:var(--primary);
     color:#fff;
+    box-shadow:0 4px 12px -4px rgba(44,90,99,.45);
   }
   .scale label:hover{border-color:var(--primary);}
 
@@ -171,24 +191,27 @@
   .dq:last-child{border-bottom:none;}
   .dq .dqtext{font-size:15.5px;}
   .dq .dqcol{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     text-align:center;
   }
   .dq .dqcol .colhead{font-size:10.5px;color:var(--ink-soft);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;}
   .yn{display:flex;gap:6px;justify-content:center;}
   .yn label{
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-weight:500;
     font-size:12.5px;
     padding:6px 10px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:var(--radius-sm);
     cursor:pointer;
-    background:#FCFBF9;
+    background:#FBFAF7;
     color:var(--ink-soft);
+    transition:background .12s, border-color .12s, color .12s;
   }
   .yn input{position:absolute;opacity:0;pointer-events:none;}
   .yn label.checked{background:var(--primary);border-color:var(--primary);color:#fff;}
   .dq-domain{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:11px;
     color:var(--primary);
     font-weight:700;
@@ -206,17 +229,19 @@
 
   .chipgrid{display:flex;flex-wrap:wrap;gap:8px;}
   .chip{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-weight:500;
     font-size:13.5px;
-    padding:9px 14px;
+    padding:9px 15px;
     border:1px solid var(--line);
-    border-radius:20px;
+    border-radius:999px;
     cursor:pointer;
-    background:#FCFBF9;
+    background:#FBFAF7;
     color:var(--ink-soft);
+    transition:background .12s, border-color .12s, color .12s, box-shadow .12s;
   }
   .chip input{position:absolute;opacity:0;pointer-events:none;}
-  .chip.checked{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .chip.checked{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 12px -4px rgba(44,90,99,.45);}
 
   .dq-phase{
     font-size:11px;
@@ -232,14 +257,20 @@
   .dq-textarea{
     width:100%;
     min-height:110px;
-    padding:12px 14px;
+    padding:13px 15px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
-    font-family:"Helvetica Neue",Arial,sans-serif;
-    font-size:15px;
-    background:#FCFBF9;
+    border-radius:var(--radius-sm);
+    font-family:"Lora",Georgia,serif;
+    font-size:15.5px;
+    background:#FBFAF7;
     color:var(--ink);
     resize:vertical;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .dq-textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:var(--ring);
   }
 
   .navbar{
@@ -250,28 +281,34 @@
     gap:12px;
   }
   button{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:14.5px;
     font-weight:600;
     padding:12px 22px;
-    border-radius:var(--radius);
+    border-radius:var(--radius-sm);
     border:1px solid var(--primary);
     background:var(--primary);
     color:#fff;
     cursor:pointer;
+    box-shadow:var(--shadow-btn);
+    transition:background .15s, box-shadow .15s, transform .1s;
   }
+  button:hover{background:var(--primary-dark);border-color:var(--primary-dark);}
+  button:active{transform:translateY(1px);}
   button.ghost{
     background:transparent;
     color:var(--primary-dark);
     border:1px solid var(--line);
+    box-shadow:none;
   }
-  button:disabled{opacity:.45;cursor:not-allowed;}
+  button.ghost:hover{background:#EFEEE9;border-color:var(--line);}
+  button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
   button.small{padding:8px 14px;font-size:13px;}
 
   .progress{
-    height:3px;
+    height:4px;
     background:var(--line);
-    border-radius:2px;
+    border-radius:99px;
     overflow:hidden;
     margin-bottom:26px;
   }
@@ -282,7 +319,7 @@
   }
 
   .incomplete-note{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
     color:var(--accent);
     margin-top:4px;
@@ -294,6 +331,8 @@
   .report-paper{
     background:var(--paper);
     border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-card);
     padding:40px;
   }
   .report-head{
@@ -305,9 +344,9 @@
     margin-bottom:20px;
   }
   .report-head h1{font-size:22px;margin-bottom:2px;}
-  .report-head .sub{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);}
+  .report-head .sub{font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);}
   .report-meta{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
     text-align:right;
     color:var(--ink-soft);
@@ -321,7 +360,7 @@
     gap:10px;
   }
   .pill{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:11.5px;
     font-weight:700;
     padding:3px 10px;
@@ -338,13 +377,13 @@
   .dq-report-item:last-child{border-bottom:none;}
   .dq-report-q{font-size:14.5px;font-weight:600;margin-bottom:4px;}
   .dq-report-a{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13.5px;
     color:var(--ink-soft);
     margin-bottom:2px;
   }
   .scorebox{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:12px;
@@ -359,7 +398,7 @@
   .scorebox .cell .lab{font-size:11.5px;color:var(--ink-soft);}
   .report-text{font-size:15px;}
   .flagged-list{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13.5px;
     margin:10px 0 0;
     padding-left:18px;
@@ -367,7 +406,7 @@
   }
   .flagged-list li{margin-bottom:3px;}
   .diva-note{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13.5px;
     background:#EFEEE9;
     border-left:3px solid var(--accent);
@@ -378,7 +417,7 @@
     margin-top:36px;
     padding-top:16px;
     border-top:1px solid var(--line);
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:13px;
     color:var(--ink-soft);
   }
@@ -388,7 +427,7 @@
     margin:26px 0 6px;
   }
   .disclaimer{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:11.5px;
     color:var(--ink-soft);
     margin-top:20px;
@@ -401,7 +440,7 @@
     margin-top:20px;
   }
   .privacy-note{
-    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     font-size:12px;
     color:var(--ink-soft);
     text-align:center;
@@ -433,11 +472,11 @@
   .pro-access input[type=password]{
     padding:8px 10px;
     border:1px solid var(--line);
-    border-radius:var(--radius);
+    border-radius:var(--radius-sm);
     font-size:14px;
     width:110px;
     text-align:center;
-    background:#FCFBF9;
+    background:#FBFAF7;
   }
   .pro-access input[type=file]{
     font-size:12px;
@@ -455,7 +494,7 @@
     .shell{max-width:100%;padding:0;}
     #screen-asrs,#screen-wurs,#screen-intro,#screen-diva,#screen-thankyou,.report-actions,.privacy-note,header.top,.progress,.pro-access{display:none !important;}
     #report{display:block !important;}
-    .report-paper{border:none;padding:0;}
+    .report-paper{border:none;box-shadow:none;border-radius:0;padding:0;}
   }
 </style>
 </head>
@@ -558,7 +597,7 @@
         <div class="subhead" style="margin-top:0">Início dos sintomas</div>
         <div class="field">
           <label for="onsetSelect">Vários desses sintomas já estavam presentes antes dos 12 anos de idade?</label>
-          <select id="onsetSelect" class="sans" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:15px;background:#FCFBF9;">
+          <select id="onsetSelect" class="sans" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:15px;background:#FBFAF7;color:var(--ink);">
             <option value="">Selecione…</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
@@ -578,9 +617,9 @@
   <section id="screen-thankyou" style="display:none">
     <div class="card" style="text-align:center;padding:48px 28px;">
       <h2 style="margin-bottom:10px;">Obrigado(a).</h2>
-      <p class="lede" style="margin:0 auto 6px;">Suas respostas foram registradas e enviadas com segurança para o consultório. Pode devolver o dispositivo para a equipe, se for o caso.</p>
+      <p class="lede" style="margin:0 auto 6px;">Suas respostas foram registradas e enviadas com segurança para o Dr. Alysson Figueiredo. Pode devolver o dispositivo para a equipe, se for o caso.</p>
       <p class="lede sans" id="downloadNote" style="display:none;font-size:13.5px;margin-top:14px;">
-        Não foi possível confirmar o envio agora (sem conexão?). Por garantia, um arquivo protegido com suas respostas foi salvo neste dispositivo — normalmente na pasta <strong>Downloads</strong> ou <strong>Transferências</strong>. Se possível, envie esse arquivo para o consultório por WhatsApp ou e-mail.
+        Não foi possível confirmar o envio agora (sem conexão?). Por garantia, um arquivo protegido com suas respostas foi salvo neste dispositivo — normalmente na pasta <strong>Downloads</strong> ou <strong>Transferências</strong>. Se possível, envie esse arquivo para o Dr. Alysson Figueiredo por WhatsApp ou e-mail.
       </p>
     </div>
   </section>
@@ -650,7 +689,7 @@
       <div class="signature">
         <div>Avaliação clínica complementar realizada por:</div>
         <div class="line"></div>
-        <div>Alysson — CRM-PR 49.769</div>
+        <div>Dr. Alysson Figueiredo — CRM-PR 49.769</div>
       </div>
 
       <div class="disclaimer">
@@ -1066,7 +1105,7 @@ ${plainDomain('Hiperatividade / impulsividade')}
 Início dos sintomas: ${onsetLabel}
 Áreas com prejuízo relatado: ${data.impair.length ? data.impair.join(', ') : 'nenhuma marcada'}
 
-Avaliação: Alysson — CRM-PR 49.769
+Avaliação: Dr. Alysson Figueiredo — CRM-PR 49.769
 Apoio de triagem — não constitui diagnóstico isolado.`;
 }
 
@@ -1227,7 +1266,7 @@ ${document.getElementById('divaMeta').textContent}
 
 Próximo passo: entrevista estruturada DIVA-5 completa em consulta para fechamento diagnóstico.
 
-Avaliação: Alysson — CRM-PR 49.769
+Avaliação: Dr. Alysson Figueiredo — CRM-PR 49.769
 Este relatório é apoio de triagem e não constitui diagnóstico isolado.`;
   navigator.clipboard.writeText(txt).then(()=>{
     const btn = document.getElementById('copyBtn');
