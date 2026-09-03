@@ -6,35 +6,50 @@
 <title>Triagem de TDAH — ASRS-18, WURS-25 e DIVA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F3F1EC;
+    --bg:#F7F9F9;
     --paper:#FFFFFF;
-    --ink:#1E2B2E;
-    --ink-soft:#5B6A70;
-    --line:#E3DFD4;
-    --primary:#2C5A63;
-    --primary-dark:#1D4249;
-    --accent:#B5652E;
-    --ok:#3E7256;
-    --warn:#B5652E;
-    --radius:12px;
-    --radius-sm:9px;
-    --shadow-card:0 1px 2px rgba(30,43,46,.04), 0 10px 28px -14px rgba(30,43,46,.14);
-    --shadow-btn:0 6px 18px -6px rgba(44,90,99,.42);
-    --ring:0 0 0 3px rgba(44,90,99,.14);
+    --sunken:#EEF1F2;
+    --ink:#151A1C;
+    --ink-body:#272D30;
+    --ink-soft:#525C60;
+    --ink-faint:#6E797E;
+    --line:#DFE4E6;
+    --line-strong:#C5CDD0;
+    --primary:#1F656B;
+    --primary-dark:#1A5156;
+    --accent:#C77D11;
+    --accent-bg:#FBF1E0;
+    --accent-text:#7D4E08;
+    --info:#2A6FB0;
+    --info-bg:#EAF2FA;
+    --ok:#1E8E5A;
+    --ok-bg:#E7F4EE;
+    --ok-text:#115838;
+    --ok-border:#C5E6D5;
+    --error:#C0392F;
+    --font-sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+    --radius:14px;
+    --radius-md:10px;
+    --radius-sm:6px;
+    --shadow-card:0 1px 3px rgba(16,46,49,.08), 0 1px 2px rgba(16,46,49,.04);
+    --shadow-btn:0 4px 14px -4px rgba(31,101,107,.4);
+    --ring:0 0 0 3px rgba(31,101,107,.14);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:var(--bg);
-    color:var(--ink);
-    font-family:"Lora","Iowan Old Style","Georgia",serif;
-    line-height:1.55;
+    color:var(--ink-body);
+    font-family:var(--font-sans);
+    line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  .sans{font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;}
+  .sans{font-family:var(--font-sans);}
+  .mono{font-family:var(--font-mono);}
   .shell{
     max-width:760px;
     margin:0 auto;
@@ -43,39 +58,44 @@
   header.top{
     display:flex;
     justify-content:space-between;
-    align-items:baseline;
+    align-items:center;
     border-bottom:1px solid var(--line);
     padding-bottom:16px;
     margin-bottom:32px;
   }
   header.top .mark{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
-    font-weight:600;
-    letter-spacing:.02em;
-    color:var(--primary-dark);
-  }
-  header.top .step{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-mono);
     font-size:12.5px;
     font-weight:500;
-    color:var(--ink-soft);
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--primary);
+  }
+  header.top .step{
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    font-weight:500;
+    color:var(--ink-faint);
   }
   h1{
     font-size:30px;
     font-weight:600;
-    margin:0 0 6px;
+    margin:0 0 8px;
     letter-spacing:-.01em;
+    color:var(--ink);
   }
   h2{
-    font-size:21px;
+    font-size:24px;
     font-weight:600;
     margin:0 0 4px;
+    letter-spacing:-.01em;
+    color:var(--ink);
   }
   p.lede{
     color:var(--ink-soft);
     font-size:16px;
-    max-width:60ch;
+    max-width:62ch;
+    line-height:1.65;
     margin:0 0 24px;
   }
   .card{
@@ -83,14 +103,14 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     box-shadow:var(--shadow-card);
-    padding:28px 28px 24px;
+    padding:32px;
     margin-bottom:20px;
   }
   .field{margin-bottom:16px;}
   .field label{
     display:block;
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
+    font-family:var(--font-sans);
+    font-size:12.5px;
     font-weight:500;
     color:var(--ink-soft);
     margin-bottom:6px;
@@ -100,12 +120,13 @@
     padding:11px 13px;
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:15px;
-    background:#FBFAF7;
-    color:var(--ink);
-    transition:border-color .15s, box-shadow .15s;
+    font-family:var(--font-sans);
+    font-size:14px;
+    background:var(--sunken);
+    color:var(--ink-body);
+    transition:border-color .14s, box-shadow .14s;
   }
+  .field input[type=date]{font-family:var(--font-mono);}
   .field input[type=text]:focus, .field input[type=date]:focus{
     outline:none;
     border-color:var(--primary);
@@ -115,23 +136,25 @@
   @media (max-width:520px){.row2{grid-template-columns:1fr;}}
 
   .instructions{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-sans);
     font-size:14px;
-    background:#EEF1EA;
+    line-height:1.65;
+    background:var(--info-bg);
     border-radius:var(--radius-sm);
-    border-left:3px solid var(--primary);
+    border-left:3px solid var(--info);
     padding:12px 16px;
     margin-bottom:24px;
-    color:var(--ink);
+    color:var(--ink-body);
   }
   .subhead{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
-    text-transform:none;
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    text-transform:uppercase;
     color:var(--primary-dark);
     font-weight:700;
-    margin:28px 0 12px;
-    padding-bottom:6px;
+    letter-spacing:.06em;
+    margin:24px 0 12px;
+    padding-bottom:8px;
     border-bottom:1px solid var(--line);
   }
   .subhead:first-of-type{margin-top:0;}
@@ -143,9 +166,12 @@
   .question:last-child{border-bottom:none;}
   .qtext{
     font-size:16px;
+    line-height:1.65;
     margin-bottom:12px;
+    color:var(--ink-body);
   }
   .qnum{
+    font-family:var(--font-mono);
     color:var(--primary);
     font-weight:600;
     margin-right:6px;
@@ -157,102 +183,51 @@
   }
   .scale label{
     flex:1 1 auto;
-    min-width:78px;
+    min-width:80px;
     text-align:center;
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-sans);
     font-weight:500;
     font-size:12.5px;
+    line-height:1.3;
     color:var(--ink-soft);
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
     padding:9px 4px;
     cursor:pointer;
-    background:#FBFAF7;
-    transition:background .12s, border-color .12s, color .12s, box-shadow .12s;
+    background:var(--bg);
+    transition:background .14s, border-color .14s, color .14s, box-shadow .14s;
     user-select:none;
   }
   .scale input{position:absolute;opacity:0;pointer-events:none;}
   .scale label.checked{
-    background:var(--primary);
-    border-color:var(--primary);
-    color:#fff;
-    box-shadow:0 4px 12px -4px rgba(44,90,99,.45);
+    background:var(--primary) !important;
+    border-color:var(--primary) !important;
+    color:#fff !important;
+    box-shadow:0 3px 8px -3px rgba(31,101,107,.4);
   }
-  .scale label:hover{border-color:var(--primary);}
+  .scale label:hover{border-color:var(--primary) !important;}
 
-  .dq{
-    padding:14px 0;
-    border-bottom:1px solid var(--line);
-    display:grid;
-    grid-template-columns:1fr 130px 130px;
-    gap:14px;
-    align-items:center;
-  }
-  .dq:last-child{border-bottom:none;}
-  .dq .dqtext{font-size:15.5px;}
-  .dq .dqcol{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    text-align:center;
-  }
-  .dq .dqcol .colhead{font-size:10.5px;color:var(--ink-soft);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;}
-  .yn{display:flex;gap:6px;justify-content:center;}
-  .yn label{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-weight:500;
-    font-size:12.5px;
-    padding:6px 10px;
-    border:1px solid var(--line);
-    border-radius:var(--radius-sm);
-    cursor:pointer;
-    background:#FBFAF7;
-    color:var(--ink-soft);
-    transition:background .12s, border-color .12s, color .12s;
-  }
-  .yn input{position:absolute;opacity:0;pointer-events:none;}
-  .yn label.checked{background:var(--primary);border-color:var(--primary);color:#fff;}
   .dq-domain{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:11px;
+    font-family:var(--font-sans);
+    font-size:12.5px;
     color:var(--primary);
     font-weight:700;
     text-transform:uppercase;
-    letter-spacing:.04em;
-    margin-top:18px;
-    margin-bottom:2px;
+    letter-spacing:.06em;
+    margin-bottom:4px;
   }
-  .dq-domain:first-child{margin-top:0;}
-  @media (max-width:560px){
-    .dq{grid-template-columns:1fr;gap:8px;}
-    .dq .dqcol{text-align:left;}
-    .yn{justify-content:flex-start;}
-  }
-
-  .chipgrid{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-weight:500;
-    font-size:13.5px;
-    padding:9px 15px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    cursor:pointer;
-    background:#FBFAF7;
-    color:var(--ink-soft);
-    transition:background .12s, border-color .12s, color .12s, box-shadow .12s;
-  }
-  .chip input{position:absolute;opacity:0;pointer-events:none;}
-  .chip.checked{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 12px -4px rgba(44,90,99,.45);}
-
   .dq-phase{
+    font-family:var(--font-mono);
     font-size:11px;
-    color:var(--ink-soft);
-    letter-spacing:.05em;
-    margin-bottom:14px;
+    color:var(--ink-faint);
+    letter-spacing:.06em;
+    margin-bottom:20px;
   }
   .dq-bigtext{
-    font-size:19px;
-    line-height:1.4;
-    margin-bottom:18px;
+    font-size:18px;
+    line-height:1.65;
+    margin-bottom:20px;
+    color:var(--ink-body);
   }
   .dq-textarea{
     width:100%;
@@ -260,12 +235,13 @@
     padding:13px 15px;
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
-    font-family:"Lora",Georgia,serif;
-    font-size:15.5px;
-    background:#FBFAF7;
-    color:var(--ink);
+    font-family:var(--font-sans);
+    font-size:16px;
+    line-height:1.65;
+    background:var(--sunken);
+    color:var(--ink-body);
     resize:vertical;
-    transition:border-color .15s, box-shadow .15s;
+    transition:border-color .14s, box-shadow .14s;
   }
   .dq-textarea:focus{
     outline:none;
@@ -273,44 +249,61 @@
     box-shadow:var(--ring);
   }
 
+  .chipgrid{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:var(--font-sans);
+    font-weight:500;
+    font-size:14px;
+    padding:9px 16px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    cursor:pointer;
+    background:var(--bg);
+    color:var(--ink-soft);
+    transition:background .14s, border-color .14s, color .14s;
+  }
+  .chip input{position:absolute;opacity:0;pointer-events:none;}
+  .chip:hover{border-color:var(--primary) !important;}
+  .chip.checked{background:var(--primary) !important;border-color:var(--primary) !important;color:#fff !important;}
+
   .navbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-top:28px;
+    margin-top:24px;
     gap:12px;
   }
   button{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:14.5px;
+    font-family:var(--font-sans);
+    font-size:14px;
     font-weight:600;
-    padding:12px 22px;
-    border-radius:var(--radius-sm);
+    padding:12px 28px;
+    border-radius:var(--radius-md);
     border:1px solid var(--primary);
     background:var(--primary);
     color:#fff;
     cursor:pointer;
     box-shadow:var(--shadow-btn);
-    transition:background .15s, box-shadow .15s, transform .1s;
+    transition:background .14s, box-shadow .14s, transform .1s;
   }
-  button:hover{background:var(--primary-dark);border-color:var(--primary-dark);}
-  button:active{transform:translateY(1px);}
+  button:hover:not(:disabled){background:var(--primary-dark);border-color:var(--primary-dark);}
+  button:active:not(:disabled){transform:translateY(1px);}
   button.ghost{
     background:transparent;
     color:var(--primary-dark);
     border:1px solid var(--line);
     box-shadow:none;
   }
-  button.ghost:hover{background:#EFEEE9;border-color:var(--line);}
+  button.ghost:hover:not(:disabled){background:var(--sunken);border-color:var(--line-strong);}
   button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
-  button.small{padding:8px 14px;font-size:13px;}
+  button.small{padding:8px 16px;font-size:12.5px;border-radius:var(--radius-sm);}
 
   .progress{
-    height:4px;
+    height:3px;
     background:var(--line);
-    border-radius:99px;
+    border-radius:999px;
     overflow:hidden;
-    margin-bottom:26px;
+    margin-bottom:32px;
   }
   .progress > div{
     height:100%;
@@ -319,9 +312,9 @@
   }
 
   .incomplete-note{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
-    color:var(--accent);
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    color:var(--error);
     margin-top:4px;
     display:none;
   }
@@ -341,64 +334,69 @@
     align-items:flex-start;
     border-bottom:2px solid var(--ink);
     padding-bottom:16px;
-    margin-bottom:20px;
+    margin-bottom:32px;
   }
-  .report-head h1{font-size:22px;margin-bottom:2px;}
-  .report-head .sub{font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);}
+  .report-head h1{font-size:24px;margin-bottom:4px;}
+  .report-head .sub{font-family:var(--font-sans);font-size:12.5px;color:var(--ink-soft);}
   .report-meta{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
+    font-family:var(--font-mono);
+    font-size:12.5px;
     text-align:right;
     color:var(--ink-soft);
   }
-  .result-block{margin-bottom:26px;}
+  .result-block{margin-bottom:32px;}
+  .result-block.accent{padding-left:16px;border-left:4px solid var(--info);}
   .result-block h3{
-    font-size:17px;
-    margin:0 0 10px;
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 12px;
     display:flex;
+    flex-wrap:wrap;
     align-items:center;
-    gap:10px;
+    gap:12px;
+    color:var(--ink);
   }
   .pill{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-sans);
     font-size:11.5px;
     font-weight:700;
     padding:3px 10px;
-    border-radius:20px;
+    border-radius:999px;
     letter-spacing:.02em;
   }
-  .pill.pos{background:#F4E3D6;color:var(--accent);}
-  .pill.neg{background:#E1EBE5;color:var(--ok);}
-  .pill.neutral{background:#E7E4DC;color:var(--ink-soft);}
+  .pill.pos{background:var(--accent-bg);color:var(--accent-text);}
+  .pill.neg{background:var(--ok-bg);color:var(--ok-text);}
+  .pill.neutral{background:var(--line);color:var(--ink-soft);}
   .dq-report-item{
-    padding:10px 0;
+    padding:12px 0;
     border-bottom:1px solid var(--line);
   }
   .dq-report-item:last-child{border-bottom:none;}
-  .dq-report-q{font-size:14.5px;font-weight:600;margin-bottom:4px;}
+  .dq-report-q{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--ink-body);}
   .dq-report-a{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13.5px;
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    line-height:1.65;
     color:var(--ink-soft);
     margin-bottom:2px;
   }
+  .dq-report-a strong{color:var(--ink-body);}
   .scorebox{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:12px;
-    margin:12px 0 14px;
+    margin:0 0 16px;
   }
   .scorebox .cell{
     border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:12px 14px;
+    border-radius:var(--radius-md);
+    padding:12px 16px;
   }
-  .scorebox .cell .num{font-size:22px;font-weight:700;color:var(--primary-dark);font-family:"Iowan Old Style",Georgia,serif;}
-  .scorebox .cell .lab{font-size:11.5px;color:var(--ink-soft);}
-  .report-text{font-size:15px;}
+  .scorebox .cell .num{font-size:22px;font-weight:700;color:var(--primary-dark);font-family:var(--font-mono);}
+  .scorebox .cell .lab{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4;}
+  .report-text{font-size:16px;line-height:1.65;color:var(--ink-body);}
   .flagged-list{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-sans);
     font-size:13.5px;
     margin:10px 0 0;
     padding-left:18px;
@@ -406,63 +404,73 @@
   }
   .flagged-list li{margin-bottom:3px;}
   .diva-note{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13.5px;
-    background:#EFEEE9;
+    font-family:var(--font-sans);
+    font-size:14px;
+    line-height:1.65;
+    background:var(--accent-bg);
     border-left:3px solid var(--accent);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
     padding:12px 16px;
-    margin-top:6px;
+    margin-top:16px;
+    color:var(--ink-body);
   }
   .signature{
-    margin-top:36px;
+    margin-top:40px;
     padding-top:16px;
     border-top:1px solid var(--line);
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:13px;
+    font-family:var(--font-sans);
+    font-size:14px;
     color:var(--ink-soft);
   }
   .signature .line{
     border-bottom:1px solid var(--ink-soft);
     width:280px;
-    margin:26px 0 6px;
+    margin:24px 0 8px;
   }
+  .signature .name{font-family:var(--font-mono);font-size:14px;color:var(--ink-body);}
   .disclaimer{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
+    font-family:var(--font-sans);
     font-size:11.5px;
-    color:var(--ink-soft);
+    line-height:1.65;
+    color:var(--ink-faint);
     margin-top:20px;
     border-top:1px dashed var(--line);
     padding-top:12px;
   }
   .report-actions{
     display:flex;
-    gap:10px;
+    flex-wrap:wrap;
+    gap:12px;
     margin-top:20px;
   }
   .privacy-note{
-    font-family:"Plus Jakarta Sans","Helvetica Neue",Arial,sans-serif;
-    font-size:12px;
-    color:var(--ink-soft);
+    font-family:var(--font-sans);
+    font-size:12.5px;
+    color:var(--ink-faint);
     text-align:center;
-    margin-top:18px;
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
   }
 
   .pro-access{
     text-align:center;
-    margin:40px 0;
+    margin:40px auto;
+    font-family:var(--font-sans);
     font-size:12.5px;
+    color:var(--ink-faint);
     max-width:760px;
-    margin-left:auto;
-    margin-right:auto;
     padding:0 20px;
   }
   .pro-access a{
-    color:var(--ink-soft);
+    color:var(--ink-faint);
     text-decoration:none;
-    border-bottom:1px dotted var(--ink-soft);
+    border-bottom:1px dotted var(--line-strong);
   }
   .pro-access #pinBox{
-    margin-top:14px;
+    margin-top:16px;
     display:flex;
     gap:8px;
     justify-content:center;
@@ -473,19 +481,21 @@
     padding:8px 10px;
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
+    font-family:var(--font-mono);
     font-size:14px;
     width:110px;
     text-align:center;
-    background:#FBFAF7;
+    background:var(--sunken);
+    color:var(--ink-body);
   }
   .pro-access input[type=file]{
-    font-size:12px;
+    font-size:12.5px;
     max-width:220px;
   }
   .pro-access #pinError{
     width:100%;
-    color:var(--accent);
-    font-size:12px;
+    color:var(--error);
+    font-size:12.5px;
     margin-top:8px;
   }
 
@@ -597,7 +607,7 @@
         <div class="subhead" style="margin-top:0">Início dos sintomas</div>
         <div class="field">
           <label for="onsetSelect">Vários desses sintomas já estavam presentes antes dos 12 anos de idade?</label>
-          <select id="onsetSelect" class="sans" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:15px;background:#FBFAF7;color:var(--ink);">
+          <select id="onsetSelect" class="sans" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);font-size:14px;background:var(--sunken);color:var(--ink-body);">
             <option value="">Selecione…</option>
             <option value="sim">Sim</option>
             <option value="nao">Não</option>
@@ -615,7 +625,10 @@
 
   <!-- ================= THANK YOU (paciente) ================= -->
   <section id="screen-thankyou" style="display:none">
-    <div class="card" style="text-align:center;padding:48px 28px;">
+    <div class="card" style="text-align:center;padding:48px 32px;">
+      <div style="width:48px;height:48px;border-radius:999px;background:var(--ok-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:1px solid var(--ok-border);">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
       <h2 style="margin-bottom:10px;">Obrigado(a).</h2>
       <p class="lede" style="margin:0 auto 6px;">Suas respostas foram registradas e enviadas com segurança para o Dr. Alysson Figueiredo. Pode devolver o dispositivo para a equipe, se for o caso.</p>
       <p class="lede sans" id="downloadNote" style="display:none;font-size:13.5px;margin-top:14px;">
@@ -650,7 +663,7 @@
         </div>
       </div>
 
-      <div class="result-block">
+      <div class="result-block accent">
         <h3>ASRS-18 <span class="pill" id="asrsPill">—</span></h3>
         <div class="scorebox">
           <div class="cell"><div class="num" id="asrsAscore">0/9</div><div class="lab">Parte A — desatenção (freq./muito freq.)</div></div>
@@ -660,7 +673,7 @@
         <p class="report-text" id="asrsInterp"></p>
       </div>
 
-      <div class="result-block">
+      <div class="result-block accent">
         <h3>WURS-25 <span class="pill" id="wursPill">—</span></h3>
         <div class="scorebox">
           <div class="cell"><div class="num" id="wursScore">0/100</div><div class="lab">Pontuação total</div></div>
@@ -689,7 +702,7 @@
       <div class="signature">
         <div>Avaliação clínica complementar realizada por:</div>
         <div class="line"></div>
-        <div>Dr. Alysson Figueiredo — CRM-PR 49.769 / RQE 40.020</div>
+        <div class="name">Dr. Alysson Figueiredo — CRM-PR 49.769 / RQE 40.020</div>
       </div>
 
       <div class="disclaimer">
@@ -702,7 +715,7 @@
       <button class="ghost small" onclick="copyReportText()" id="copyBtn">Copiar texto do relatório</button>
       <button class="ghost small" onclick="location.reload()">Recomeçar</button>
     </div>
-    <div class="privacy-note">Nada neste formulário é enviado a servidores — todos os dados existem apenas no seu navegador e somem ao fechar a página.</div>
+    <div class="privacy-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Não grava · Não armazena — todos os dados existem apenas no seu navegador e somem ao fechar a página.</div>
   </section>
 
 </div>
